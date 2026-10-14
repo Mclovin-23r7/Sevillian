@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sevillian")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c05cbe7d6ea3fb736969979ae901702ce8a44586")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sevillian")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sevillian")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
