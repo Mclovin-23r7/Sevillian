@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Sevillian.Database
 {
 
-    internal class HabitContext(DbContextOptions options) : DbContext(options)
+    public class HabitContext(DbContextOptions options) : DbContext(options)
     {
-        public DbSet<Habits> Habits { get; set; }
-        public DbSet<HabitDates> HabitDates { get; set; }
+        public DbSet<Habits> Habits => Set<Habits>();
+        public DbSet<HabitDates> HabitDates => Set<HabitDates>();
         
     }
     
