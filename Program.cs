@@ -9,11 +9,9 @@ using Sevillian.Database;
 using Repository;
 
 using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-ILogger logger = loggerFactory.CreateLogger("Program");
-
 var options = new DbContextOptionsBuilder<SevillianContext>()
     .UseSqlite("Data Source=habit.db")
     .EnableSensitiveDataLogging()
     .Options;
 
-var habitRepo = new HabitRepository(options);
+var habitRepo = new HabitRepository(options, loggerFactory.CreateLogger<HabitRepository>());

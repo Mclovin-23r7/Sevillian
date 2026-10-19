@@ -1,10 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Sevillian.Database;
 
 namespace Repository
 {
-    public abstract class Repository<T>(DbContextOptions<SevillianContext> options) where T : class
+    public abstract class Repository<T>(
+        DbContextOptions<SevillianContext> options,
+        ILogger logger
+        ) where T : class
     {
+        protected ILogger EL => logger;
         protected SevillianContext CreateContext() => new(options);
         public void Initialise()
         {
@@ -22,16 +27,24 @@ namespace Repository
             using var db = CreateContext();
             return [.. db.Set<T>().AsNoTracking()];
         }
-        public T? GetById(int id)
+        public T? Get(int id)
         {
             using var db = CreateContext();
             return db.Set<T>().Find(id);
         }
     }
 
-    public class HabitRepository(DbContextOptions<SevillianContext> options)
-        : Repository<Habit>(options)
+    public class HabitRepository(
+        DbContextOptions<SevillianContext> options,
+        ILogger logger
+        )
+        : Repository<Habit>(options, logger)
     {
+        public Habit? Get(string name)
+        {
+            using var db = CreateContext();
+            return db.Habit.AsNoTracking().FirstOrDefault(h => h.Name == name);
+        }
         public bool UpdateNameById(int id, string name)
         {
             bool habitUpdated;

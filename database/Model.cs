@@ -1,8 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace Sevillian.Database
 {
-
+    public class SevillianContextFactory : IDesignTimeDbContextFactory<SevillianContext>
+    {
+        public SevillianContext CreateDbContext(string[] args)
+        {
+            var options = new DbContextOptionsBuilder<SevillianContext>()
+                .UseSqlite("Data Source=:memory:")
+                .Options;
+            return new SevillianContext(options);
+        }
+    }
     public class SevillianContext(DbContextOptions options) : DbContext(options)
     {
         public DbSet<Habit> Habit => Set<Habit>();
