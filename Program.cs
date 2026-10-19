@@ -6,22 +6,14 @@ Create database if it doesn't
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Sevillian.Database;
+using Repository;
 
-using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
-ILogger logger = factory.CreateLogger("Program");
+using ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+ILogger logger = loggerFactory.CreateLogger("Program");
 
-var options = new DbContextOptionsBuilder<HabitContext>()
+var options = new DbContextOptionsBuilder<SevillianContext>()
     .UseSqlite("Data Source=habit.db")
+    .EnableSensitiveDataLogging()
     .Options;
 
-var dbm = new DatabaseManager(options);
-dbm.Initialise();
-dbm.AddHabit("Jork it", "Jork it daily");
-dbm.AddHabit("Your mother", "your mother");
-dbm.AddHabit("Daily doodles", "Daisy doodled daily");
-var habits = dbm.GetHabits();
-Console.WriteLine(habits.Count);
-dbm.UpdateHabitDescription(habits[^1].Id, "Updated description");
-dbm.UpdateHabitName(habits[^1].Id, "Updated name");
-dbm.DeleteHabit(habits[^1].Id);
-Console.WriteLine(habits.Count);
+var habitRepo = new HabitRepository(options);
