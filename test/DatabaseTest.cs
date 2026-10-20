@@ -64,6 +64,12 @@ namespace Sevillian.Test
             }
         }
         [Test]
+        public void Get_InvalidId_ReturnsNull()
+        {
+            var wrongHabit = _habitRepo.Get(_habitSeed.Count + 1);
+            Assert.That(wrongHabit, Is.Null);
+        }
+        [Test]
         public void Get_HabitByName_ReturnsCorrectHabit()
         {
             for (int c = 1; c <= _habitSeed.Count; c++)
