@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore;
 using Sevillian.Database;
 using Repository;
 using Microsoft.Extensions.Logging;

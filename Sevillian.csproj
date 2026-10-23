@@ -9,6 +9,7 @@
   
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);test/**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);test/**;custom/**</DefaultItemExcludes>
 </PropertyGroup>
 
   <ItemGroup>
