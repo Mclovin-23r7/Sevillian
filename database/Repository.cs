@@ -61,7 +61,7 @@ namespace Repository
         {
             bool habitUpdated;
             using var db = CreateContext();
-            var habit = db.Habit.Find(id);
+            var habit = Get(id);
             if (habit is null)
             {
                 EL.LogWarning("Failed to find habit with ID {}", id);

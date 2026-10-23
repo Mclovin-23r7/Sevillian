@@ -68,7 +68,7 @@ namespace Sevillian.Test
             Assert.That(wrongHabit, Is.Null);
         }
         [Test]
-        public void Get_HabitByName_ReturnsCorrectHabit()
+        public void Get_CorrectHabitByName_ReturnsHabit()
         {
             for (int c = 1; c <= _habitSeed.Count; c++)
             {
@@ -76,6 +76,13 @@ namespace Sevillian.Test
                 var habit = _habitRepo.Get(habitName);
                 Assert.That(habit?.Name, Is.EqualTo(habitName));
             }
+        }
+        [Test]
+        public void Get_IncorrectHabitByName_ReturnsNull()
+        {
+            var habitName = "Test Habit Name";
+            var habit = _habitRepo.Get(habitName);
+            Assert.That(habit, Is.Null);
         }
         [Test]
         public void UpdateNameById_UpdateHabit_HabitNameSuccessfullyUpdated()
@@ -93,6 +100,13 @@ namespace Sevillian.Test
             }
         }
         [Test]
+        public void UpdateNameById_IncorrectHabitId_ReturnsFalse()
+        {
+            var testId = 500;
+            bool response = _habitRepo.UpdateNameById(testId, "It will never work");
+            Assert.That(response, Is.False);
+        }
+        [Test]
         public void UpdateDescById_UpdateHabit_HabitDescSuccessfullyUpdated()
         {
             int habitId = Random.Shared.Next(1, _habitSeed.Count + 1);
@@ -108,6 +122,13 @@ namespace Sevillian.Test
             }
         }
         [Test]
+        public void UpdateDescById_IncorrectHabitId_ReturnsFalse()
+        {
+            var testId = 500;
+            bool response = _habitRepo.UpdateDescById(testId, "It will never work");
+            Assert.That(response, Is.False);
+        }        
+        [Test]
         public void DeleteHabit_DeletingHabit_HabitIsDeleted()
         {
             int habitId = Random.Shared.Next(1, _habitSeed.Count + 1);
@@ -119,6 +140,13 @@ namespace Sevillian.Test
                 Assert.That(success, Is.True);
                 Assert.That(habit, Is.Null);
             }
+        }
+        [Test]
+        public void DeleteHabit_IncorrectHabitId_ReturnsFalse()
+        {
+            int habitId = 500;
+            bool response = _habitRepo.DeleteHabit(habitId);
+            Assert.That(response, Is.False);
         }
     }
 }
