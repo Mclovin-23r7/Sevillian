@@ -10,6 +10,7 @@ namespace Sevillian.Test
     {
         private HabitRepository _habitRepo = null!;
         private HabitCompletionRepository _habitCompRepo = null!;
+        private readonly DateOnly _dateSeed = new(1000, 04, 23);
         
         private List<Habit> _habitSeed = [
             new Habit{Name = "Jork it", Description = "Jork it daily"},
@@ -18,6 +19,8 @@ namespace Sevillian.Test
         ];
         private void SeedHabits()
         {
+            foreach (var c in _habitCompRepo.GetAll())
+            TestContext.Out.WriteLine($"{c.HabitId} {c.PerformanceDate}");
             foreach (Habit h in _habitSeed)
             {
                 _habitRepo.Add(h);
@@ -26,16 +29,18 @@ namespace Sevillian.Test
         private void SeedHabitCompletion()
         {
             int datesPerHabit = 3;
-            var dateSeed = new DateOnly(1000, 04, 23);
             var habits = _habitRepo.GetAll();
             foreach (Habit h in habits)
             {
-                for (int n = 1; n <= datesPerHabit; n++)
+                for (int n = 0; n < datesPerHabit; n++)
                 {
-                    _habitCompRepo.Add(new HabitCompletion {HabitId = h.Id, PerformanceDate = dateSeed});
-                    dateSeed.AddDays(1);
+                    _habitCompRepo.Add(new HabitCompletion {HabitId = h.Id, PerformanceDate = _dateSeed.AddDays(n)});
                 }
             }
+        }
+        private int GetRandomHabitId()
+        {
+            return Random.Shared.Next(1, _habitSeed.Count + 1);
         }
         [SetUp]
         public void CreateRepos()
@@ -112,8 +117,21 @@ namespace Sevillian.Test
         [Test]
         public void Get_HabitCompletion_ReturnsCorrectHabit()
         {
-            
+            var habitId = GetRandomHabitId();
+            var habitComp = _habitCompRepo.Get(habitId, _dateSeed);
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(habitComp?.HabitId, Is.EqualTo(habitId));
+                Assert.That(habitComp?.PerformanceDate, Is.EqualTo(_dateSeed));
+            }
         }
+        [Test]
+        public void Get_InvalidHabitCompletion_ReturnsNull()
+        {
+            var habitId = GetRandomHabitId();
+            var habitComp = _habitCompRepo.Get(habitId, _dateSeed.AddDays(100));
+            Assert.That(habitComp, Is.Null);
+        }        
         [Test]
         public void UpdateNameById_UpdateHabit_HabitNameSuccessfullyUpdated()
         {
