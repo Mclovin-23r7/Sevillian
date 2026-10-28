@@ -36,7 +36,6 @@ namespace Repository
             return db.Set<T>().Find(id);
         }
     }
-
     public class HabitRepository(
         DbContextOptions<SevillianContext> options,
         ILogger logger
@@ -110,6 +109,27 @@ namespace Repository
                 EL.LogInformation("Deleted habit with ID {id}", id);
             }
             return habitDeleted;
+        }
+    }
+    public class HabitCompletionRepository(
+        DbContextOptions<SevillianContext> options,
+        ILogger logger
+        )
+        : Repository<HabitCompletion>(options, logger)
+    {
+        public HabitCompletion? Get(int habitId, DateOnly habitDate)
+        {
+            using var db = CreateContext();
+            var habitComp = db.HabitCompletion.AsNoTracking().FirstOrDefault(h => h.HabitId == habitId && h.PerformanceDate == habitDate);
+            if (habitComp is null)
+            {
+                EL.LogWarning("Failed to retrieve {entity} with ID {habitId} and date {habitDate}", typeof(HabitCompletion), habitId, habitDate);
+                return null;
+            } else
+            {
+                EL.LogInformation("Retrieved {entity} with ID {habitId} and date {habitDate}", typeof(HabitCompletion), habitId, habitDate);
+                return habitComp;
+            }
         }
     }
 }
