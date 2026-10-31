@@ -16,7 +16,7 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <StackPanel>
-        <TextBlock>Hello this is the main</TextBlock>
-    </StackPanel>
+    <Window.Styles>
+        <FluentTheme />
+    </Window.Styles>
 </Window>
